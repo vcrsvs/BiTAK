@@ -1,19 +1,31 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
-  TouchableOpacity,
+  Modal,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../styles/global";
+import CrackForm from "./crackForm";
 import CrackItem from "../components/crackItem";
 
 export default function CrackList({ navigation }) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const [cracks, setCracks] = useState([
-    { name: "Living Room 1", desc: "Concrete wall behind the TV", key: "1" },
+    { title: "Living Room 1", body: "Concrete wall behind the TV", key: "1" },
   ]);
+
+  const addCrack = (crack) => {
+    crack.key = Math.random().toString();
+    setCracks((currentCracks) => {
+      return [crack, ...currentCracks];
+    });
+    setModalOpen(false);
+  };
 
   const detailsButton = (key) => {
     setCracks((prevCracks) => {
@@ -21,22 +33,34 @@ export default function CrackList({ navigation }) {
     });
   };
 
-  const addButton = () => {
-    navigation.navigate("Add Crack");
-  };
-
   return (
     <View style={globalStyles.container}>
+      <Modal visible={modalOpen} animationType="slide">
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss}>
+          <View style={globalStyles.container}>
+            <MaterialIcons
+              name="close"
+              size={24}
+              style={styles.closeButton}
+              onPress={() => setModalOpen(false)}
+            />
+            <CrackForm addCrack={addCrack} />
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
       <View style={styles.scrollDiv}>
+        <MaterialIcons
+          name="add"
+          size={24}
+          style={styles.addButton}
+          onPress={() => setModalOpen(true)}
+        />
         <FlatList
           data={cracks}
           renderItem={({ item }) => (
             <CrackItem item={item} pressHandler={detailsButton} />
           )}
         />
-        <TouchableOpacity style={styles.addButton} onPress={addButton}>
-          <Text style={globalStyles.header1}>+ ADD ITEM</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -49,14 +73,21 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: "stretch",
     justifyContent: "flex-start",
-    // borderWidth: 1,
-    // borderColor: "black",
-    //  backgroundColor: "dodgerblue",
   },
   addButton: {
+    alignSelf: "center",
+    marginBottom: 10,
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "grey",
+    borderColor: "#ccc",
+  },
+  closeButton: {
+    alignSelf: "center",
+    marginTop: 50,
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "#ccc",
   },
 });

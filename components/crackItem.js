@@ -8,8 +8,8 @@ export default function CrackItem({ item, pressHandler }) {
       style={styles.item}
       onPress={() => pressHandler(item.key)}
     >
-      <Text style={globalStyles.header1}>{item.name}</Text>
-      <Text style={globalStyles.header2}>{item.desc}</Text>
+      <Text style={globalStyles.header1}>{item.title}</Text>
+      <Text style={globalStyles.header2}>{item.body}</Text>
     </TouchableOpacity>
   );
 }
@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "grey",
+    borderColor: "#ccc",
   },
 });
