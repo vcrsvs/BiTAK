@@ -10,6 +10,12 @@ export const globalStyles = StyleSheet.create({
   },
   header1: {
     fontSize: 20,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    color: "black",
+  },
+  header2: {
+    fontSize: 18,
     color: "black",
   },
 });
