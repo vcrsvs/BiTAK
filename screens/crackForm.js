@@ -13,7 +13,7 @@ export default function CrackForm({ addCrack }) {
   return (
     <View>
       <Formik
-        initialValues={{ title: "", body: "" }}
+        initialValues={{ title: "", body: "", key: "" }}
         onSubmit={(values) => {
           addCrack(values);
         }}
